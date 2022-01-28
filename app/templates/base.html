@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-br" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>Biblioteca Setorial</title>
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/img/favicons/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/img/favicons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/img/favicons/favicon-16x16.png') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='assets/img/favicons/favicon.ico') }}">
+    <link rel="manifest" href="{{ url_for('static', filename='assets/img/favicons/manifest.json') }}">
+    <meta name="msapplication-TileImage" content="{{ url_for('static', filename='assets/img/favicons/mstile-150x150.png') }}">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link href="{{ url_for('static', filename='css/theme.min.css') }}" rel="stylesheet" />
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  </head>
+
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section class="bg-primary py-2 d-none d-sm-block">
+        <div class="container">
+          <div class="row align-items-center">
+            <!--<div class="col-auto d-none d-lg-block">
+              <p class="my-2 fs--1"><i class="fas fa-map-marker-alt me-3"></i><span>RN 233, Km 02, Sítio Lagoa do Clementino, S/N. Zona Rural - Apodi/RN - CEP 59.690,00</span></p>
+            </div>-->
+            <div class="col-auto ms-md-auto order-md-2 d-none d-sm-block">
+              <ul class="list-unstyled list-inline my-2">
+                <li class="list-inline-item"><a class="text-decoration-none" href="#!"><i class="fab fa-facebook-f text-900"></i></a></li>
+                <li class="list-inline-item"><a class="text-decoration-none" href="#!"><i class="fab fa-pinterest text-900"></i></a></li>
+                <li class="list-inline-item"><a class="text-decoration-none" href="#!"><i class="fab fa-twitter text-900"></i></a></li>
+                <li class="list-inline-item"><a class="text-decoration-none" href="https://www.instagram.com/janduisliterario/"><i class="fab fa-instagram text-900"> </i></a></li>
+              </ul>
+            </div>
+            <!--<div class="col-auto">
+              <p class="my-2 fs--1"><i class="fas fa-envelope me-3"></i><a class="text-900" href="mailto:gabin.ap@ifrn.edu.br">gabin.ap@ifrn.edu.br </a></p>
+            </div>-->
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+      <!-- ============================================-->
+
+      <nav class="navbar navbar-expand-lg navbar-light sticky-top py-3 d-block" data-navbar-on-scroll="data-navbar-on-scroll">
+        <div class="container"><a class="navbar-brand" href="/"><img src="{{ url_for('static', filename='assets/img/gallery/logo_ofc.png') }}" height="80" alt="logo" /></a><button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
+          <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+            <ul class="nav nav-pills navbar-nav ms-auto pt-2 pt-lg-0 font-base">
+              {% if request.path == url_for('home') %}
+              <li class="nav-item px-2">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>  
+              </li>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="nav-link" aria-current="page" href="{{ url_for('home') }}">Home</a>
+              </li>
+              {% endif %}
+
+              {% if request.path == url_for('list_all_books') %}
+              <li class="nav-item px-2">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('list_all_books') }}">Livros</a>
+              </li>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="nav-link" aria-current="page" href="{{ url_for('list_all_books') }}">Livros</a>
+              </li>
+              {% endif %}
+
+              {% if request.path == url_for('list_my_lendings') %}
+              <li class="nav-item px-2">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('list_my_lendings') }}">Meus Emprestimos</a>
+              </li>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="nav-link" aria-current="page" href="{{ url_for('list_my_lendings') }}">Meus Emprestimos</a>
+              </li>
+              {% endif %}
+              
+              {% if request.path == url_for('list_my_devolutions') %}
+              <li class="nav-item px-2">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('list_my_devolutions') }}">Minhas devoluções</a>
+              </li>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="nav-link" aria-current="page" href="{{ url_for('list_my_devolutions') }}">Minhas devoluções</a>
+              </li>
+              {% endif %}
+              
+              {% if session['data'] %}
+                {% if session['data']['nv_acess'] == 1 %}
+                    <li class="nav-item px-2">
+                      <div class="dropdown">
+                        <button class="nav-link dropdown-toggle" aria-current="page" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Administração
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                          {% if request.path == url_for('adm_panel') %}
+                            <a class="dropdown-item active" href="{{ url_for('adm_panel') }}">Painel</a>
+                          {% else %}
+                            <a class="dropdown-item" href="{{ url_for('adm_panel') }}">Painel</a>
+                          {% endif %}
+                          {% if request.path == url_for('all_awaiting') %}
+                            <!--<a class="dropdown-item active" href="{{ url_for('all_awaiting') }}">Validar Empréstimos</a>-->
+                          {% else %}
+                            <!--<a class="dropdown-item" href="{{ url_for('all_awaiting') }}">Validar Empréstimos</a>-->
+                          {% endif %}
+                          </div>
+                      </div>
+                    </li>
+                {% endif %}
+              {% endif %}
+
+              {% if request.path == url_for('about') %}
+              <li class="nav-item px-2">
+                <a class="nav-link active" aria-current="page" href="{{ url_for('about') }}">Sobre</a>
+              </li>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="nav-link" aria-current="page" href="{{ url_for('about') }}">Sobre</a>
+              </li>
+              {% endif %}
+              {% if session['data'] %}
+                <a class="btn btn-danger order-1 order-lg-0" href="{{ url_for('logout') }}">Sair</a>
+              {% else %}
+              <li class="nav-item px-2">
+                <a class="btn btn order-1 order-lg-0" href="{{ url_for('cadastro') }}">Cadastrar</a>
+              </li>
+              <li class="nav-item px-2">
+                <a class="btn btn-success order-1 order-lg-0" href="{{ url_for('login') }}">Entrar</a>
+              </li>
+              {% endif %}
+            </ul>
+            
+            <form class="d-flex my-3 d-block d-lg-none"><input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" /><button class="btn btn-outline-primary" type="submit">Search</button></form>
+            <div class="dropdown d-none d-lg-block"><button class="btn btn-outline-light ms-2" id="dropdownMenuButton1" type="submit" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-search text-800"></i></button>
+              <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="dropdownMenuButton1" style="top:55px">
+                <form><input class="form-control" type="search" placeholder="Search" aria-label="Search" /></form>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+
+      {% block content %}{% endblock %}
+
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+        <section>
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-md-6 col-lg-4 mb-5"><img src="{{ url_for('static', filename='assets/img/gallery/erro_foto.png') }}" width="580" alt="cta" /></div>
+              <div class="col-md-6 col-lg-5">
+                <h5 class="text-primary font-sans-serif fw-bold">Achou algum erro?</h5>
+                <h1 class="mb-5">Comunique-nos!<br />Ajude a biblioteca a ficar cada vez melhor</h1>
+                <form class="row g-0 align-items-center">
+                  <div class="col">
+                    <textarea class="form-control mb-2 mt-0" id="exampleFormControlTextarea1" rows="3" placeholder="Escreva aqui sua mensagem"></textarea>
+                    <div class="input-group-icon"><input class="form-control form-little-squirrel-control" type="email" placeholder="Informe um e-mail" aria-label="email" /><i class="fas fa-envelope input-box-icon"></i></div>
+                  </div>
+                  <div class="row-auto mt-2 text"><button class="btn btn-primary rounded-0" style="color:white;" type="submit">Enviar</button></div>
+                </form>
+              </div>
+            </div>
+          </div><!-- end of .container-->
+        </section><!-- <section> close ============================-->
+
+
+      <!-- <section> begin ============================-->
+      <section class="bg-secondary">
+        <div class="container">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-lg-6 mb-4 order-0 order-sm-0"><a class="text-decoration-none" href="#"><img src="{{ url_for('static', filename='assets/img/gallery/logo_bola.png') }}" height="150" alt="" /></a>
+              <p class="text-light my-4"> <i class="fas fa-map-marker-alt me-3"></i><span class="text-light">Endereço opcional</p>
+              <p class="text-light"> <i class="fas fa-envelope me-3"> </i><a class="text-light" href="mailto:vctung@outlook.com">Email opcional</a></p>
+              <p class="text-light"> <i class="fas fa-phone-alt me-3"></i><a class="text-light" href="#">(84) Telefone </a></p>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+      <!-- ============================================-->
+
+      <section class="py-0" style="margin-top: -5.8rem;">
+        <div class="container bg-primary">
+          <div class="row justify-content-md-between justify-content-evenly py-4">
+            <div class="col-12 col-sm-8 col-md-6 col-lg-auto text-center text-md-start">
+              <p class="fs--1 my-2 fw-bold">All rights Reserved &copy; FamiaCorp, 2021</p>
+            </div>
+            <div class="col-12 col-sm-8 col-md-6">
+              <p class="fs--1 my-2 text-center text-md-end"> Made with&nbsp;<svg class="bi bi-suit-heart-fill" xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="#EB6453" viewBox="0 0 16 16">
+                  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path>
+                </svg>&nbsp;by&nbsp;<a class="fw-bold text-900" href="https://themewagon.com/" target="_blank">ThemeWagon </a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main><!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="{{ url_for('static', filename='vendors/@popperjs/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendors/is/is.min.js') }}"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
+    <script src="{{ url_for('static', filename='vendors/fontawesome/all.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=Rubik:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  </body>
+
+</html>

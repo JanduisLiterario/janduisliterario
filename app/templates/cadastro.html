@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- <section> begin ============================-->
+  <section class="pb-8 pt-7 bg-600">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-12">
+          {% with mensagens = get_flashed_messages(with_categories = True) %}
+          {% if mensagens %}
+            {% for categoria, mensagem in mensagens%}
+            <div class="container p-0 m-0">
+              <div class="alert alert-{{categoria}}" role="alert">
+                {{ mensagem }}
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+          {% endwith %}
+          
+          <form class="col g-3" method="POST" action="{{ url_for('cadastro') }}" enctype="multipart/form-data">
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Nome</label>
+              <input type="text" class="form-control pb-2 mb-2" name="nome" >
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Email</label>
+              <input type="text" class="form-control pb-2 mb-2" name="email">
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Telefone</label>
+              <input type="text" class="form-control pb-2 mb-2" name="phone">
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Senha</label>
+              <input type="password" class="form-control pb-2 mb-2" name="senha">
+            </div>
+            
+
+            <div class="row-auto z-index-2"><button class="btn btn-primary mt-2 pt-2" style="color: white;" type="submit" value="Enviar">Enviar</button></div>
+          </form>
+        </div>
+      </div>
+    </div><!-- end of .container-->
+  </section><!-- <section> close ============================-->
+
+{% endblock %}

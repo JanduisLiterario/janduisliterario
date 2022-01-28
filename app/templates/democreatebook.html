@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<!-- <section> begin ============================-->
+  <section class="pb-8 pt-7 bg-600">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-12">
+          {% if edit %}
+            <h1 class="mb-2"><i class="fas fa-book"></i> Editar livro </h1>
+          {% else %}
+            <h1 class="mb-2"><i class="fas fa-book"></i> Adicionar livro</h1>
+          {% endif %}
+
+          {% with mensagens = get_flashed_messages(with_categories = True) %}
+          {% if mensagens %}
+            {% for categoria, mensagem in mensagens%}
+            <div class="container p-0 m-0">
+              <div class="alert alert-{{categoria}}" role="alert">
+                {{ mensagem }}
+              </div>
+            </div>
+            {% endfor %}
+          {% endif %}
+          {% endwith %}
+          
+          {% if request.endpoint == "create_book" %}
+          <form class="col g-3" method="POST" action="{{ url_for('create_book') }}" enctype="multipart/form-data">
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Título</label>
+              <input type="text" class="form-control pb-2 mb-2" name="titulo" placeholder="Insira o título da obra" >
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="descricao">Descrição</label>
+              <textarea type="text" rows="3" class="form-control pb-2 mb-2" name="descricao" placeholder="Insira uma descrição da obra"></textarea>
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="ano_lancamento">Ano de lançamento</label>
+              <input type="number" class="form-control pb-2 mb-2" name="ano_lancamento" placeholder="Insira o ano de lançamento da obra">
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="autor">Autor(a)</label>
+              <input type="text" class="form-control pb-2 mb-2" name="autor" placeholder="Insira o nome do autor(a)">
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlFile1">Escolher arquivo de imagem</label>
+              <input type="file" name="arquivo" class="form-control-file" id="exampleFormControlFile1" required>
+            </div>
+          {% else %}
+          <form class="col g-3" method="POST" action="{{ url_for('update_book', book_id=book_info.get('id')) }}">
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="titulo">Título</label>
+              <input type="text" class="form-control pb-2 mb-2" name="titulo" placeholder="Insira o título da obra" value="{{ book_info.get('titulo') }}">
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="descricao">Descrição</label>
+              <textarea type="text" rows="3" class="form-control pb-2 mb-2" name="descricao" placeholder="Insira uma descrição da obra" value="{{ book_info.get('descricao') }}">{{ book_info.get('descricao') }}</textarea>
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="ano_lancamento">Ano de lançamento</label>
+              <input type="number" class="form-control pb-2 mb-2" name="ano_lancamento" placeholder="Insira o ano de lançamento da obra" value="{{ book_info.get('ano_lancamento') }}">
+            </div>
+            <div class="row-sm-6 row-md-3">
+              <label class="form-label" for="autor">Autor(a)</label>
+              <input type="text" class="form-control pb-2 mb-2" name="autor" placeholder="Insira o nome do autor(a)" value="{{ book_info.get('autor') }}">
+            </div>
+          {% endif %}
+
+            <div class="row-auto z-index-2"><button class="btn btn-primary mt-2 pt-2" style="color: white;" type="submit" value="Enviar">Enviar</button></div>
+          </form>
+        </div>
+      </div>
+    </div><!-- end of .container-->
+  </section><!-- <section> close ============================-->
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- <section> begin ============================-->
+<section class="bg-600">
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            <h1 class="mb-3">Histórico de Empréstimos</h1>
+            <h4 class="mb-3">Livro: <a class="text-warning" href="{{ url_for('detail_book', book_id=book['id']) }}">{{ book['titulo'] }}</a></h4>
+        </div>
+        </div>
+
+        {% with mensagens = get_flashed_messages(with_categories = True) %}
+        {% if mensagens %}
+        {% for categoria, mensagem in mensagens%}
+        <div class="container p-0 m-0">
+            <div class="alert alert-{{categoria}}" role="alert">
+            {{ mensagem }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Data de Empréstimo</th>
+                <th scope="col">Validade</th>
+                <th scope="col">Situação</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in range (bookhistoric|length) %}
+            <tr>
+                <th scope="row">{{ i+1 }}</th>
+                <td>{{ bookhistoric[i]['nome'] }}</td>
+                <td>{{ bookhistoric[i]['created_at'] }}</td>
+                <td>{{ bookhistoric[i]['valid_at'] }}</td>
+                {% if bookhistoric[i]['devolvido'] == 1 %}
+                    <td class="text-success ">Devolvido</td>
+                {% else %}
+                    <td class="text-warning">Ainda não devolvido</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+     </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- <section> begin ============================-->
+      <section class="pb-8 pt-7 bg-600">
+        <div class="container">
+  
+          <div class="row">
+            <div class="col-12">
+              <h1 class="mb-2"><i class="fas fa-sign-in-alt"></i> Entrar</h1>
+              {% with mensagens = get_flashed_messages(with_categories = True) %}
+              {% if mensagens %}
+                {% for categoria, mensagem in mensagens%}
+                <div class="container p-0 m-0">
+                  <div class="alert alert-{{categoria}}" role="alert">
+                    {{ mensagem }}
+                  </div>
+                </div>
+                {% endfor %}
+              {% endif %}
+              {% endwith %}
+              <form class="col g-3" method="POST" action="{{ url_for('auth_suap') }}">
+                <div class="row-sm-6 row-md-3">
+                  <label class="form-label" for="matricula">Matrícula</label>
+                  <input type="number" class="form-control pb-2 mb-2" name="matricula" placeholder="Insira o número de sua matrícula"></div>
+                <div class="row-sm-6 row-md-3">
+                  <label class="form-label" for="senha">Senha</label>
+                  <input type="password" class="form-control pb-2 mb-2" name="senha" placeholder="Insira sua senha"></div>
+                <div class="row-auto z-index-2"><button class="btn btn-primary mt-2 pt-2" type="submit" style="color: white;" value="Enviar">Enviar</button></div>
+              </form>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+
+{% endblock %}

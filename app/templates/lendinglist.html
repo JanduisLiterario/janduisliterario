@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ============================================-->
+<!-- <section> begin ============================-->
+<section class="bg-600">
+    <div class="container">
+    <div class="row">
+        <div class="col">
+        <h1 class="mb-6">Meus Emprestimos</h1>
+        </div>
+    </div>
+
+    {% with mensagens = get_flashed_messages(with_categories = True) %}
+    {% if mensagens %}
+        {% for categoria, mensagem in mensagens%}
+        <div class="container p-0 m-0">
+        <div class="alert alert-{{categoria}}" role="alert">
+            {{ mensagem }}
+        </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container mb-3">
+        <div class="row">
+        <div class="col-12">
+            <form class="row g-3">
+            <div class="col-sm-6 col-md-3"><label class="form-label" for="inputInstructor">Título</label>
+                <input type="text" class="form-control" name="titulo" placeholder="Título da obra" value="">
+            </div>
+            <div class="col-sm-6 col-md-3"><label class="form-label" for="inputCategories">Categoria</label><select class="form-select" id="inputCategories">
+                <option selected="selected">WEB</option>
+                <option value="1">Sistemas embarcados</option>
+                </select></div>
+            <div class="col-sm-6 col-md-3"><label class="form-label" for="inputLevel">Autor</label><select class="form-select" id="inputLevel">
+                <option selected="selected">Todos</option>
+                <option value="1">Autor 1</option>
+                <option value="2">Autor 2 </option>
+                <option value="3">Autor 3</option>
+                </select></div>
+                <div class="col-sm-6 col-md-3"><label class="form-label" for="inputLanguage">Ano de publicação</label><input type="text" class="form-control" name="ano_lancamento" placeholder="" value="*"></div>
+            <div class="col-auto z-index-2"><button class="btn btn-primary" type="submit" style="color:white;">Buscar</button></div>
+            </form>
+        </div>
+        </div>
+    </div><!-- end of .container-->
+
+    <div class="row">
+
+        {% if lendings == [] %}
+            <div class="container pt-3">
+                <h3 class="text-center">Está vazio aqui, parece que você ainda não possui nenhum emprestimo...</h3>
+                <img src="{{ url_for('static', filename='assets/img/gallery/robofinal.png') }}" class="img-fluid" alt="Responsive image">
+                <h3 class="text-center pt-3">Não se preocupe, tente encontrar um livro em nosso <a class="text-warning" href="{{ url_for('list_all_books') }}">acervo.</a></h3>
+            </div>
+        {% else %}
+
+            {% for i in range (lendings|length) %}
+                <div class="col-md-4 mb-3">
+                <div class="card mb-5 mb-md-0 h-100">
+                    {% if lendings[i]['devolvido'] == True %}
+                        <span class="badge bg-black fw-normal text-uppercase bg-success">Devolvido</span>
+                    {% elif lendings[i]['devolvido'] == 'atrasado' %}
+                    <span class="badge bg-black fw-normal text-uppercase bg-danger">Atrasado</span>
+                    {% else %}
+                        <span class="badge bg-black fw-normal text-uppercase bg-warning">Em empréstimo</span>
+                    {% endif %}
+                    <img class="card-img-top" src="{{ url_for('static', filename='upload') }}/{{ lendings[i]['caminho_imagem'] }}" alt="{{ url_for('static', filename='upload/') }}{{ lendings[i]['caminho_imagem'] }}">
+                    <div class="card-body px-4 py-6 py-md-5 py-lg-6">
+                    <div class="d-flex justify-content-start text-secondary"><span class="h4 mb-0 mt-2 me-2">{{ lendings[i]['titulo'] }}</div>
+                    <hr class="border border-1" />
+                    <ul class="list-unstyled">
+                        <li class="mb-3"><i class="fas fa-user-edit"></i> Autor(a): {{ lendings[i]['autor'] }}</li>
+                        <li class="mb-3"><i class="far fa-calendar"></i></i> Emprestimo:  {{ lendings[i]['data_do_emprestimo'] }}</li>
+                        <li class="mb-3"><i class="far fa-calendar"></i></i> Válido até:  {{ lendings[i]['data_validade_emprestimo'] }}</li>
+                    </ul>
+                    <div class="d-grid">
+                    {% if lendings[i]['devolvido'] == True %}
+                        <a class="btn btn-lg btn-primary m-1 sr-only" style = "color: #ffff" href="{{ url_for('give_back', lending_id=lendings[i]['lending_id']) }}">Devolver</a>
+                        <a class="btn btn-lg btn-secondary m-1 sr-only" style = "color: #ffff" href="{{ url_for('renew_book', lending_id=lendings[i]['lending_id']) }}">Renovar</a>
+                    {% else %}
+                        <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('give_back', lending_id=lendings[i]['lending_id']) }}">Devolver</a>
+                        <a class="btn btn-lg btn-secondary m-1" style = "color: #ffff" href="{{ url_for('renew_book', lending_id=lendings[i]['lending_id']) }}">Renovar</a>
+                    {% endif %}
+                    <a class="btn btn-lg btn-info mt-1" style = "color: #ffff" href="{{ url_for('detail_book', book_id=lendings[i]['id']) }}">Detalhar</a></div>
+                    </div>
+                </div>
+                </div>
+            {% endfor %}
+        
+        {% endif %}
+        
+        
+    </div>
+    </div><!-- end of .container-->
+</section><!-- <section> close ============================-->
+<!-- ============================================-->
+
+{% endblock %}

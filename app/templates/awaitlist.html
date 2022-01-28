@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<!-- ============================================-->
+<!-- <section> begin ============================-->
+<section class="bg-600">
+    <div class="container">
+        <div class="row">
+        <div class="col">
+            <h1 class="mb-1">Lista de espera</h1>
+            <h3 class="mb-3">Livro: <a class="text-warning" href="{{ url_for('detail_book', book_id=book['id']) }}">{{ book['titulo'] }}</a></h3>
+            <h5 class="text-info mb-5">Os indivíduos em posições mais altas possuem maior prioridade, o primeiro lugar será o próximo a poder requisitar o livro e a lista sera atualizada quando o mesmo estiver com o livro ou sair da lista de espera. Os interessados são ordenados de acordo com a data que entraram na lista de espera.</h5>
+        </div>
+        </div>
+
+        {% with mensagens = get_flashed_messages(with_categories = True) %}
+        {% if mensagens %}
+        {% for categoria, mensagem in mensagens%}
+        <div class="container p-0 m-0">
+            <div class="alert alert-{{categoria}}" role="alert">
+            {{ mensagem }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Matrícula</th>
+                <th scope="col">Email</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for i in range (awaiting|length) %}
+              <tr>
+                {% if i == 0 %}
+                    <th scope="row">1</th>
+                {% else %}
+                    {% if i == 1 %}
+                        <th scope="row">{{ i+1 }}</th>
+                    {% else %}
+                        <th scope="row">{{ i }}</th>
+                    {% endif %}
+                {% endif %}
+                <td>{{ awaiting[i]['nome'] }}</td>
+                <td>{{ awaiting[i]['phone'] }}</td>
+                <td>{{ awaiting[i]['email'] }}</td>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+        <!--
+
+        <div class="row">
+
+        {% for i in range (books|length) %}
+            <div class="col-md-4 mb-3">
+            <div class="card mb-5 mb-md-0 h-100">
+                <div class="text-center mb-5"><span class="badge bg-black fw-normal text-uppercase bg-success">Disponível</span></div>
+                <div class="card-body px-4 py-6 py-md-5 py-lg-6">
+                <div class="d-flex justify-content-start text-secondary"><span class="h4 mb-0 mt-2 me-2">{{ books[i]['titulo'] }}</div>
+                <p class="text-muted mb-2 my-md-3">{{ books[i]['descricao'] }}</p>
+                <hr class="border border-1" />
+                <ul class="list-unstyled">
+                    <li class="mb-3"><i class="fas fa-user-edit"></i> {{ books[i]['autor'] }}</li>
+                    <li class="mb-3"><i class="far fa-calendar"></i></i> {{ books[i]['ano_lancamento'] }}</li>
+                </ul>
+                <div class="d-grid">
+                    <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('lending_book', book_id=books[i]['id']) }}">Pedir Empréstimo</a>
+                    <a class="btn btn-lg btn-secondary m-1" style = "color: #ffff" href="{{ url_for('awaiting_list', book_id=books[i]['id']) }}">Lista de Espera</a>
+                    <a class="btn btn-lg btn-info m-1" style = "color: #ffff" href="{{ url_for('update_book', book_id=books[i]['id']) }}">Editar Livro</a>
+                    <a class="btn btn-lg btn-danger m-1" style = "color: #ffff" href="{{ url_for('delete_book', book_id=books[i]['id']) }}">Deletar Livro</a></div>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+        
+        
+        </div>
+
+        -->
+    </div><!-- end of .container-->
+    </section><!-- <section> close ============================-->
+    <!-- ============================================-->
+
+{% endblock %}

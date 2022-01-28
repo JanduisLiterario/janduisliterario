@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="pt-6 bg-600" id="home">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-5 col-lg-6 order-0 order-md-1 text-end"><img class="pt-7 pt-md-0 w-100" src="{{ url_for('static', filename='assets/img/gallery/menina_voando.png') }}" width="470" alt="hero-header" /></div>
+        <div class="col-md-7 col-lg-6 text-md-start text-center py-6">
+          <h1 class="fw-bold font-sans-serif">Janduís literário</h1>
+          <h2 class="fs-4 fs-xl-5 mb-5">Seja bem vindo(a) a nossa biblioteca colaborativa! aqui você pode consultar o nosso acervo, gerenciar seus emprestimos e muito mais.</h2>
+        </div>
+      </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+      <div class="row">
+        <h1 class="text-center mb-5">Livros mais emprestados</h1>
+        {% for i in range(LendingPerBooks|length) if i<3 %}
+
+        <div class="col-md-4 mb-3">
+        <div class="card mb-5 mb-md-0 h-100">
+
+            {% if LendingPerBooks[i]['disponivel'] == True %}
+              <span class="badge bg-black fw-normal text-uppercase bg-success">Disponível</span>
+            {% else %}
+              <span class="badge bg-black fw-normal text-uppercase bg-danger">Indisponível</span>
+            {% endif %}
+            <img class="card-img-top" src="{{ url_for('static', filename='upload') }}/{{ LendingPerBooks[i]['caminho_imagem'] }}" alt="{{ LendingPerBooks[i]['titulo'] }}">
+            <div class="card-body px-4 py-6 py-md-5 py-lg-6">
+            <div class="d-flex justify-content-start text-secondary"><span class="h4 mb-0 mt-2 me-2">{{ LendingPerBooks[i]['titulo'] }}</div>
+            <hr class="border border-1" />
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fas fa-user-edit"></i> {{ LendingPerBooks[i]['autor'] }}</li>
+                <li class="mb-3"><i class="far fa-calendar"></i></i>  Publicado em {{ LendingPerBooks[i]['ano_lancamento'] }}</li>
+                <li class="mb-3"><i class="fas fa-users"></i></i> Este livro já foi emprestado {{ LendingPerBooks[i]['qtd'] }} vezes</li>
+            </ul>
+            <div class="d-grid"> 
+              <a class="btn btn-lg btn-primary" style = "color: #ffff" href="{{ url_for('lending_book', book_id=LendingPerBooks[i]['id']) }}">Pedir empréstimo</a>
+              <a class="btn btn-lg btn-info mt-1" style = "color: #ffff" href="{{ url_for('detail_book', book_id=LendingPerBooks[i]['id']) }}">Detalhar</a></div>
+            </div>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div><!-- end of .container-->
+
+    <div class="container mt-8">
+        <div class="row">
+        <h1 class="text-center mb-5">Livros recém cadastrados</h1>
+        {% for i in range(BooksPerDate|length) if i<3 %}
+        <div class="col-md-4 mb-3">
+        <div class="card mb-5 mb-md-0 h-100">
+            {% if BooksPerDate[i]['disponivel'] == True %}
+              <span class="badge bg-black fw-normal text-uppercase bg-success">Disponível</span>
+            {% else %}
+              <span class="badge bg-black fw-normal text-uppercase bg-danger">Indisponível</span>
+            {% endif %}
+            <img class="card-img-top p-0 m-0" src="{{ url_for('static', filename='upload') }}/{{ BooksPerDate[i]['caminho_imagem'] }}" alt="{{ BooksPerDate[i]['titulo'] }}">
+            <div class="card-body px-4 py-6 py-md-5 py-lg-6">
+            <div class="d-flex justify-content-start text-secondary"><span class="h4 mb-0 mt-2 me-2">{{ BooksPerDate[i]['titulo'] }}</div>
+            <hr class="border border-1" />
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fas fa-user-edit"></i> {{ BooksPerDate[i]['autor'] }}</li>
+                <li class="mb-3"><i class="far fa-calendar"></i></i> Cadastrado em {{ BooksPerDate[i]['created_at'] }}</li>
+            </ul>
+            <div class="d-grid"> 
+              <a class="btn btn-lg btn-primary" style = "color: #ffff" href="{{ url_for('lending_book', book_id=BooksPerDate[i]['id']) }}">Pedir empréstimo</a>
+              <a class="btn btn-lg btn-info mt-1" style = "color: #ffff" href="{{ url_for('detail_book', book_id=BooksPerDate[i]['id']) }}">Detalhar</a>
+            </div>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div><!-- end of .container-->
+
+    <div class="container mt-8">
+        <div class="row">
+        <h1 class="text-center mb-5">Livros recém devolvidos</h1>
+        {% for i in range(BooksPerDevolutionDate|length) if i<3 %}
+        <div class="col-md-4 mb-3">
+        <div class="card mb-5 mb-md-0 h-100">
+            {% if BooksPerDevolutionDate[i]['disponivel'] == True %}
+              <span class="badge bg-black fw-normal text-uppercase bg-success">Disponível</span>
+            {% else %}
+              <span class="badge bg-black fw-normal text-uppercase bg-danger">Indisponível</span>
+            {% endif %}
+            <img class="card-img-top" src="{{ url_for('static', filename='upload') }}/{{ BooksPerDevolutionDate[i]['caminho_imagem'] }}" alt="{{ BooksPerDevolutionDate[i]['titulo'] }}">
+            <div class="card-body px-4 py-6 py-md-5 py-lg-6">
+            <div class="d-flex justify-content-start text-secondary"><span class="h4 mb-0 mt-2 me-2">{{ BooksPerDevolutionDate[i]['titulo'] }}</div>
+            <hr class="border border-1" />
+            <ul class="list-unstyled">
+                <li class="mb-3"><i class="fas fa-user-edit"></i> {{ BooksPerDevolutionDate[i]['autor'] }}</li>
+                <li class="mb-3"><i class="far fa-calendar"></i></i> Devolvido em {{ BooksPerDevolutionDate[i]['data'] }}</li>
+            </ul>
+            <div class="d-grid"> 
+              <a class="btn btn-lg btn-primary" style = "color: #ffff" href="{{ url_for('lending_book', book_id=BooksPerDevolutionDate[i]['id']) }}">Pedir empréstimo</a>
+              <a class="btn btn-lg btn-info mt-1" style = "color: #ffff" href="{{ url_for('detail_book', book_id=BooksPerDevolutionDate[i]['id']) }}">Detalhar</a>
+            </div>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+    </div><!-- end of .container-->
+
+</section><!-- <section> close ============================-->
+    
+
+{% endblock %}

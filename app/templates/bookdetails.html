@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section class="pb-11 pt-7 bg-600">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <h6 class="font-sans-serif text-primary fw-bold">Detalhes do livro</h6>
+              <h1 class="mb-6">{{ book['titulo'] }}</h1>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+      <!-- ============================================-->
+
+
+      {% with mensagens = get_flashed_messages(with_categories = True) %}
+      {% if mensagens %}
+        {% for categoria, mensagem in mensagens%}
+        <div class="container p-0 m-0">
+          <div class="alert alert-{{categoria}}" role="alert">
+            {{ mensagem }}
+          </div>
+        </div>
+        {% endfor %}
+      {% endif %}
+      {% endwith %}
+
+
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+      <section style="margin-top:-21.5rem">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8 justify-content-center"><img class="w-50 h-50" src="{{ url_for('static', filename='upload') }}/{{ book['caminho_imagem'] }}" maxwidth = '100px' maxheight = '100px' />
+              <h1 class="my-4">Descrição</h1>
+              <p class="text-justify">{{ book['descricao'] }}</p>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item"><strong>Autor</strong>: {{ book['autor'] }}</li>
+                  <li class="list-group-item"><strong>Ano de lançamento</strong>: {{ book['ano_lancamento'] }}</li>
+                  <li class="list-group-item"><strong>Doador</strong>: {{ user['nome'] }}</li>
+                  <li class="list-group-item"><strong>Data de cadastro</strong>: {{ book['created_at'] }}</li>
+                  {% if book['disponivel'] == True %}
+                    <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('lending_book', book_id=book['id']) }}">Pedir Empréstimo</a>
+                  {% else %}
+                    <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('lending_book', book_id=book['id']) }}">Entrar na fila de espera</a>
+                  {% endif %}
+                  <a class="btn btn-lg btn-success m-1" style = "color: #ffff" href="{{ url_for('book_historic', book_id=book['id']) }}">Histórico de Empréstimos</a>
+                    <a class="btn btn-lg btn-secondary m-1" style = "color: #ffff" href="{{ url_for('awaiting_list', book_id=book['id']) }}">Lista de Espera</a>
+                    {% if session['data']['nv_acess'] == 1 %}
+                      <a class="btn btn-lg btn-info m-1" style = "color: #ffff" href="{{ url_for('update_book', book_id=book['id']) }}">Editar Livro</a>
+                      <a class="btn btn-lg btn-danger m-1" style = "color: #ffff" href="{{ url_for('delete_book', book_id=book['id']) }}">Deletar Livro</a>
+                    {% endif %}
+                      <li class="list-group-item text-center"><img src="{{ url_for('static', filename='assets/img/gallery/study.svg') }}" width="150" height="150" alt="..." />
+                    <p class="text-muted mb-0 mt-4">Caso deseje, entre em contato com o doador:</p><a class="text-info" href="mailto:{{ user['email'] }}">{{ user['email'] }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div><!-- end of .container-->
+      </section><!-- <section> close ============================-->
+      <!-- ============================================-->
+
+{% endblock %}

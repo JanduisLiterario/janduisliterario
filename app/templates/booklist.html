@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+      <!-- ============================================-->
+      <!-- <section> begin ============================-->
+        <section class="bg-600">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <h1 class="mb-6">Livros no acervo</h1>
+                </div>
+                <div class="col">
+                  <div class="d-flex justify-content-end"><label class="form-check-label me-2" for="customSwitch1">Indisponíveis</label>
+                    <div class="form-check form-switch"><input class="form-check-input" id="customSwitch1" type="checkbox" checked="checked" /><label class="form-check-label align-top" for="customSwitch1">Disponíveis</label></div>
+                  </div>
+                </div>
+              </div>
+
+              {% with mensagens = get_flashed_messages(with_categories = True) %}
+              {% if mensagens %}
+                {% for categoria, mensagem in mensagens%}
+                <div class="container p-0 m-0">
+                  <div class="alert alert-{{categoria}}" role="alert">
+                    {{ mensagem }}
+                  </div>
+                </div>
+                {% endfor %}
+              {% endif %}
+              {% endwith %}
+
+              <div class="container mb-3">
+                <div class="row">
+                  <div class="col-12">
+                    <form class="row g-3" method="get" action="{{ url_for('search_books') }}">
+                      <div class="col-sm-6 col-md-3"><label class="form-label" for="inputInstructor">Título</label>
+                        <input type="text" class="form-control" name="title" placeholder="Título da obra" value="">
+                      </div>
+                      <div class="col-sm-6 col-md-3"><label class="form-label" for="inputCategories">Categoria</label><select class="form-select" id="inputCategories">
+                          <option selected="selected">WEB</option>
+                          <option value="1">Sistemas embarcados</option>
+                        </select></div>
+                      <div class="col-sm-6 col-md-3"><label class="form-label" for="inputLevel">Autor</label><select class="form-select" id="inputLevel">
+                          <option selected="selected">Todos</option>
+                          <option value="1">Autor 1</option>
+                          <option value="2">Autor 2 </option>
+                          <option value="3">Autor 3</option>
+                        </select></div>
+                        <!--<div class="col-sm-6 col-md-3"><label class="form-label" for="inputLanguage">Ano de publicação</label><input type="text" class="form-control" name="ano_lancamento" aria-readonly="true" placeholder="" value="*"></div>-->
+                      <div class="col-auto z-index-2"><button class="btn btn-primary" type="submit" style="color:white;">Buscar</button><a class="btn btn-primary m-2" href="{{ url_for('create_book') }}" style="color:white;">Cadastrar Novo Livro</a></div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- end of .container-->
+
+              <div class="row">
+
+                {% for i in range (books|length) %}
+                    <div class="col-md-4 mb-3">
+                    <div class="card mb-5 mb-md-0 h-100" style="width: 18rem;">
+                        {% if books[i]['disponivel'] == True %}
+                          <span class="badge bg-black fw-normal text-uppercase bg-success">Disponível</span>
+                        {% else %}
+                        <span class="badge bg-black fw-normal text-uppercase bg-danger">Indisponível</span>
+                        {% endif %}
+                        <img class="card-img-top" src="{{ url_for('static', filename='upload') }}/{{ books[i]['caminho_imagem'] }}" alt="{{ url_for('static', filename='upload/') }}{{ books[i]['caminho_imagem'] }}">
+                        <div class="card-body px-4 py-6 py-md-5 py-lg-3">
+                          <div class="d-flex justify-content-start text-secondary">
+                            <span class="h4">{{ books[i]['titulo'] }}</span>
+                          </div>
+                          <hr class="border border-1" />
+                          <ul class="list-unstyled">
+                              <li class="mb-3"><i class="fas fa-user-edit"></i> {{ books[i]['autor'] }}</li>
+                              <li class="mb-3"><i class="far fa-calendar"></i></i> {{ books[i]['ano_lancamento'] }}</li>
+                          </ul>
+                          <div class="d-grid">
+                            {% if books[i]['disponivel'] == True %}
+                              <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('lending_book', book_id=books[i]['id']) }}">Pedir Empréstimo</a>
+                            {% else %}
+                            <a class="btn btn-lg btn-primary m-1" style = "color: #ffff" href="{{ url_for('lending_book', book_id=books[i]['id']) }}">Entrar na fila de espera</a>
+                            {% endif %}
+                            
+                            <a class="btn btn-lg btn-secondary m-1" style = "color: #ffff" href="{{ url_for('awaiting_list', book_id=books[i]['id']) }}">Lista de Espera</a>
+                            <!--
+                            <a class="btn btn-lg btn-info m-1" style = "color: #ffff" href="{{ url_for('update_book', book_id=books[i]['id']) }}">Editar Livro</a>
+                            <a class="btn btn-lg btn-danger m-1" style = "color: #ffff" href="{{ url_for('delete_book', book_id=books[i]['id']) }}">Deletar Livro</a>
+                            -->
+                            <a class="btn btn-lg btn-info m-1" style = "color: #ffff" href="{{ url_for('detail_book', book_id=books[i]['id']) }}">Detalhar</a></div>
+                          </div>
+                        </div>
+                      </div>
+                {% endfor %}
+                
+                
+                    </div>
+                  </div><!-- end of .container-->
+          </section><!-- <section> close ============================-->
+          <!-- ============================================-->
+
+
+
+          <div class="modal fade" id="#exampleModal" tabindex="-1" role="dialog" aria-labelledby="#exampleModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+{% endblock %}
